@@ -35,6 +35,9 @@ Author URI: http://kaleidos.net/FFF8E7/
  * Online: http://www.gnu.org/licenses/gpl.txt
  */
 
+define('BOKZUY_API_URL', 'https://api.bokzuy.com');
+
+
 // For i10n
 add_action('init', 'bokzuy_textdomain'); 
 function bokzuy_textdomain() {
@@ -44,23 +47,23 @@ function bokzuy_textdomain() {
 
 
 /**********************************************************/
-/***************** Llatest badges widget ********************/
+/***************** Llast badges widget ********************/
 /**********************************************************/
 
-// A function to create the latest badges widget
-add_action( 'widgets_init', 'latest_badges_widget_init' );
-function latest_badges_widget_init() {
-        register_widget('WP_Widget_Bokzuy_Latest_Badges');
+// A function to create the last badges widget
+add_action( 'widgets_init', 'last_badges_widget_init' );
+function last_badges_widget_init() {
+    register_widget('WP_Widget_Bokzuy_Last_Badges');
 }
 
-// WP_Widget_Bokzuy_Latest_Badges class definition
-class WP_Widget_Bokzuy_Latest_Badges extends WP_Widget {
+// WP_Widget_Bokzuy_Last_Badges class definition
+class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 	
 	// Init
-    function WP_Widget_Bokzuy_Latest_Badges() {
-        $widget_ops = array('classname' => 'widget_bokzuy_latest_badges', 
-                            'description' => __('A list of the latest Bokzuy badges', 'bokzuy'));
-        $this->WP_Widget('bokzuy_latest_badges', __('Bokzuy - Latest badges', 'bokzuy'), $widget_ops);
+    function WP_Widget_Bokzuy_Last_Badges() {
+        $widget_ops = array('classname' => 'widget_bokzuy_last_badges', 
+                            'description' => __('A list of the last Bokzuy badges', 'bokzuy'));
+        $this->WP_Widget('bokzuy_last_badges', __('WP-Bokzuy - Last badges', 'bokzuy'), $widget_ops);
 	}
         
 	// Show widget 
@@ -75,7 +78,7 @@ class WP_Widget_Bokzuy_Latest_Badges extends WP_Widget {
             echo $before_title . $title . $after_title;
         }
 		else{
-			echo $before_title. __('My latest badges', 'bokzuy'). $after_title;
+			echo $before_title. __('My last badges', 'bokzuy'). $after_title;
 		}
 
         // Show the badges
@@ -107,7 +110,7 @@ class WP_Widget_Bokzuy_Latest_Badges extends WP_Widget {
         global $wp_taxonomies;
                 
         $defaults = array( 
-            'title' => __('My latest badges', 'bokzuy'),
+            'title' => __('My last badges', 'bokzuy'),
             'user' => '',
             'password' => '',
             'number' => 6,
@@ -155,8 +158,75 @@ class WP_Widget_Bokzuy_Latest_Badges extends WP_Widget {
                 <?php _e("Show Bokzuy info", 'bokzuy'); ?></label>
         </p>
         <?php
+    }
+}
+
+class Bokzuy(){
+    var $user_auth;
+    var $user_id;
+   
+    function Bokzuy($name, $password){
+        $this->user_auth = $name.':'.$password;
+    }
+ 
+    function Bokzuy($name, $password){
+        if (!empty($name) && !empty($password))  
+            $this->user_auth = $name.':'$password;
+    }
+
+    function __GET_REQUEST($url, $options, $data){    
+        $request = new HttpRequest($url, HttpRequest::METH_GET);
+        $request->setOptions($options);
+        $request->addQueryData($data);
+
+        try {
+            $request->send();
+            if ($request->getResponseCode() == 200) {
+                return $request->getResponseBody();
+            }
+        } catch (HttpException $ex) {
+            return null;
+        }
+    }
+
+    function __POST_REQUEST($url, $options, $fields){
+        $request = new HttpRequest($url, HttpRequest::METH_POST);
+        $request->setOptions($options);
+        $request->addPostFields($fields);
+
+        try {
+            return  $request->send()->getBody();
+        } catch (HttpException $ex) {
+            return null;
+        }
+    }
+
+    function connect($name, $password){  
+        $url = BOKZUY_API_URL.'/user/id';
+        $options = array('httpauth' => $this->user_auth);
+        $data = null;
+    
+        $content = json_decode($this->__GET_REQUEST($url, $options, $data));
+
+        if (!empty($content) && $content->success){
+            $this->user_id = $content->userId;
+        }
+    }
+
+    function get_last_badges($count = 6)
+        $url = BOKZUY_API_URL.'/user/'.$this->user_id.'/bokie';
+        $options = array('httpauth' => $this->user_auth);
+        $data = array('max' => $count);
+
+        $content = json_decode($this->__GET_REQUEST($url, $options, $data));
+
+        if (!empty($content) && $content->success){
+            return $content->result;
         }
 }
 
-
 ?>
+
+
+
+
