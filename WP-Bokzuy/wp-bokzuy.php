@@ -35,7 +35,7 @@ Author URI: http://kaleidos.net/FFF8E7/
  * Online: http://www.gnu.org/licenses/gpl.txt
  */
 
-define('BOKZUY_API_URL', 'https://api.bokzuy.com');
+define('BOKZUY_API_URL', 'http://api.bokzuy.com');
 
 
 // For i10n
@@ -47,7 +47,7 @@ function bokzuy_textdomain() {
 
 
 /**********************************************************/
-/***************** Llast badges widget ********************/
+/***************** Last badges widget *********************/
 /**********************************************************/
 
 // A function to create the last badges widget
@@ -82,10 +82,28 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 		}
 
         // Show the badges
-		$instance['user']
-		$instance['password']
-		$instance['number']
-		if($instance['show_photos']){ } 
+        $bokzuy = new Bokzuy($instance['user'], $instance['password']);
+        if ($bokzuy.connect()){
+            $badgets = $bokzuy.get_last_badges($instance['number']);
+            ?>
+            <ul class="list-badges">
+            <?php
+            foreach ($badges as $badge){ 
+                ?>
+                <li class="badge">
+                    <a href="<?php echo $badge->bokyUrl; ?>" target="_blank">
+		                <?php if($instance['show_photos']){ ?>
+                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>"/>
+                        <?php } ?>
+                        <p><?php echo $badge->name; ?></p>
+                    </a>
+                </li>
+                <?php
+            }
+            ?>
+            </ul>
+            <?php
+        }
 
         // Show the powered text
 		if($instance['show_powered']){ } 
@@ -201,7 +219,7 @@ class Bokzuy(){
         }
     }
 
-    function connect($name, $password){  
+    function connect(){  
         $url = BOKZUY_API_URL.'/user/id';
         $options = array('httpauth' => $this->user_auth);
         $data = null;
@@ -210,7 +228,9 @@ class Bokzuy(){
 
         if (!empty($content) && $content->success){
             $this->user_id = $content->userId;
+            return true;
         }
+        return false;
     }
 
     function get_last_badges($count = 6)
