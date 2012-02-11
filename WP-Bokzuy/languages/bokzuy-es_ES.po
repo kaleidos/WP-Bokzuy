@@ -1,0 +1,72 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: wp-bokzuy.php:75
+#@ bokzuy
+msgid "A list of the last Bokzuy badges"
+msgstr "Lista de las últimas chapas de Bokzuy"
+
+#: wp-bokzuy.php:76
+#@ bokzuy
+msgid "WP-Bokzuy - Last badges"
+msgstr "WP-Bokzuy - Últimas chapas"
+
+#: wp-bokzuy.php:91
+#: wp-bokzuy.php:141
+#@ bokzuy
+msgid "My last badges"
+msgstr "Mis últimas chapas"
+
+#: wp-bokzuy.php:154
+#@ bokzuy
+msgid "Title"
+msgstr "Título"
+
+#: wp-bokzuy.php:159
+#@ bokzuy
+msgid "Bokzuy user"
+msgstr "Usuario de Bokzuy"
+
+#: wp-bokzuy.php:164
+#@ bokzuy
+msgid "Bokzuy password"
+msgstr "Contraseña de Bokzuy"
+
+#: wp-bokzuy.php:170
+#@ bokzuy
+msgid "Number of badges to show"
+msgstr "Número de chapas a mostrar"
+
+#: wp-bokzuy.php:185
+#@ bokzuy
+msgid "Language"
+msgstr "Idioma"
+
+#: wp-bokzuy.php:203
+#@ bokzuy
+msgid "Show the budges images"
+msgstr "Mostrar las imágenes de las chapas"
+
+#: wp-bokzuy.php:210
+#@ bokzuy
+msgid "Show Bokzuy info"
+msgstr "Mostrar la información de Bokzuy"
+
