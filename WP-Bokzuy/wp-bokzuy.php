@@ -40,8 +40,20 @@ define('BOKZUY_API_URL', 'http://api.bokzuy.com');
 // For i10n
 add_action('init', 'bokzuy_textdomain'); 
 function bokzuy_textdomain() {
-    $dir = basename(dirname(__FILE__))."/languages";
-    load_plugin_textdomain( 'bokzuy', 'wp-content/plugins/'.$dir, $dir);
+    if (function_exists('load_plugin_textdomain')) {
+        $dir = basename(dirname(__FILE__)).'/languages';
+        load_plugin_textdomain( 'bokzuy', 'wp-content/plugins/'.$dir, $dir);
+    }
+    // Todo: Show alert
+}
+
+// Adding style.css
+add_action( 'wp_print_styles', 'bokzuy_styles' );
+function bokzuy_styles(){
+    if (function_exists('wp_enqueue_script')) {
+       wp_enqueue_style('bokzuy', get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/css/style.css');
+    }
+    // Todo: Show alert
 }
 
 /**********************************************************/
