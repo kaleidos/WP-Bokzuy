@@ -96,16 +96,16 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
         if ($bokzuy->connect()){
             $badges = $bokzuy->get_last_badges($instance['number']);
             ?>
-            <ul class="list-badges" style="list-style-type: none;">
+            <ul class="list-badges">
             <?php
             foreach ($badges as $badge){ 
                 ?>
                 <li class="badge">
                     <a href="<?php echo $badge->bokyUrl; ?>" target="_blank">
 		                <?php if($instance['show_photos']){ ?>
-                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>" style="width: 60px; vertical-align: middle;"/>
+                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>" />
                         <?php } ?>
-                        <p style="float: right; display: inline; text-align: right;"><?php echo $badge->name; ?></p>
+                        <p><?php echo $badge->name; ?></p>
                     </a>
                 </li>
                 <?php
@@ -118,9 +118,9 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
         // Show the powered text
 		if($instance['show_powered']){ 
             ?>
-            <div class="bokzuy-info" style="float: right;">
+            <div class="bokzuy-info">
                 <a href="http://bokzuy.com" target="_blank">
-                <span>Powered by</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" />
+                <span>Powered by</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page'); ?>"/>
                 </a>
             </div>
             <?php
