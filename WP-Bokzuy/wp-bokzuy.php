@@ -80,20 +80,20 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 		}
         
         // Show the badges
-        $bokzuy = new Bokzuy($instance['user'], $instance['password']);
+        $bokzuy = new Bokzuy($instance['user'], $instance['password'], $instance['lang']);
         if ($bokzuy->connect()){
-            $badgets = $bokzuy->get_last_badges($instance['number']);
+            $badges = $bokzuy->get_last_badges($instance['number']);
             ?>
-            <ul class="list-badges">
+            <ul class="list-badges" style="list-style-type: none;">
             <?php
             foreach ($badges as $badge){ 
                 ?>
                 <li class="badge">
                     <a href="<?php echo $badge->bokyUrl; ?>" target="_blank">
 		                <?php if($instance['show_photos']){ ?>
-                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>"/>
+                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>" style="width: 60px; vertical-align: middle;"/>
                         <?php } ?>
-                        <p><?php echo $badge->name; ?></p>
+                        <p style="float: right; display: inline; text-align: right;"><?php echo $badge->name; ?></p>
                     </a>
                 </li>
                 <?php
@@ -104,7 +104,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
         }
 
         // Show the powered text
-		if($instance['show_powered']){ } 
+		//if($instance['show_powered']){ } 
         
         echo $after_widget;
     }
@@ -112,7 +112,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 	// Save admin panel options
     function update($new_instance, $old_instance){
         $instance = $old_instance;
-		$values = array('title', 'user', 'password', 'number', 'show_photos', 'show_powered');   
+		$values = array('title', 'user', 'password', 'number', 'lang', 'show_photos', 'show_powered');   
         
         foreach($values as $val){
             $instance[$val] = strip_tags($new_instance[$val]);
@@ -130,6 +130,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
             'user' => '',
             'password' => '',
             'number' => 6,
+            'lang' => 'en',
             'show_photos' => True, 
             'show_powered' => True, 
         );
@@ -155,10 +156,33 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
         <p>
             <label for="<?php echo $this->get_field_id('number'); ?>">
                 <?php _e("Number of badges to show", 'bokzuy'); ?>:</label>
-            <input id="<?php echo $this->get_field_id('number'); ?>" 
-                name="<?php echo $this->get_field_name('number'); ?>" 
-                value="<?php echo $instance['number']; ?>" size="3" class="widefat" />
-        </p>	
+            <select id="<?php echo $this->get_field_id('number'); ?>" 
+                name="<?php echo $this->get_field_name('number'); ?>" class="widefat">
+                <?php 
+                foreach( range(1, 20) as $option){
+                    $sel = '';
+                    if($instance['number'] == $option)
+                        $sel = 'selected="selected"';
+                    echo '<option '.$sel.' value="'.$option.'">'.$option.'</option>';
+                }
+                ?>
+            </select>
+        </p> 
+        <p>
+            <label for="<?php echo $this->get_field_id('lang'); ?>">
+                <?php _e("Language", 'bokzuy'); ?>:</label>
+            <select id="<?php echo $this->get_field_id('lang'); ?>" 
+                name="<?php echo $this->get_field_name('lang'); ?>" class="widefat">
+                <?php 
+                foreach( array('es', 'en') as $option){
+                    $sel = '';
+                    if($instance['lang'] == $option)
+                        $sel = 'selected="selected"';
+                    echo '<option '.$sel.' value="'.$option.'">'.$option.'</option>';
+                }
+                ?>
+            </select>
+        </p> 
         <p>
             <input type="checkbox" id="<?php echo $this->get_field_id('show_photos'); ?>" 
                 name="<?php echo $this->get_field_name('show_photos'); ?>" 
@@ -180,9 +204,11 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 class Bokzuy{
     var $user_auth;
     var $user_id;
+    var $lang;
    
-    function Bokzuy($name, $password){
+    function Bokzuy($name, $password, $lang){
         $this->user_auth = $name.':'.$password;
+        $this->lang = $lang;
     }
  
     function __GET_REQUEST($url, $options, $data){    
@@ -192,7 +218,9 @@ class Bokzuy{
 
         try {
             $request->send();
+            //echo $request->getResponseCode();
             if ($request->getResponseCode() == 200) {
+                //echo $request->getResponseBody();
                 return $request->getResponseBody();
             }
         } catch (HttpException $ex) {
@@ -215,27 +243,29 @@ class Bokzuy{
     function connect(){  
         $url = BOKZUY_API_URL.'/user/id';
         $options = array('httpauth' => $this->user_auth);
-        $data = null;
+        $data = array('lang' => $this->lang);
     
         $content = json_decode($this->__GET_REQUEST($url, $options, $data));
 
-        if (!empty($content) && $content->success){
+        if ($content && $content->success){
             $this->user_id = $content->userId;
-            return true;
+            return $this->user_id;
         }
-        return false;
+        return null;
     }
 
     function get_last_badges($count = 6){
-        $url = BOKZUY_API_URL.'/user/'.$this->user_id.'/bokie';
+        $url = BOKZUY_API_URL.'/user/'.$this->user_id.'/bokies';
         $options = array('httpauth' => $this->user_auth);
-        $data = array('max' => $count);
+        $data = array('lang' => $this->lang, 
+                      'max' => $count);
 
         $content = json_decode($this->__GET_REQUEST($url, $options, $data));
 
-        if (!empty($content) && $content->success){
+        if ($content && $content->success){
             return $content->result;
         }
+        return null;
     }
 }
 
