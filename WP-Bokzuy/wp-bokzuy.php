@@ -118,9 +118,9 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
         // Show the powered text
 		if($instance['show_powered']){ 
             ?>
-            <div class="bokzuy-info">
+            <div class="bokzuy-info" style="float: right;">
                 <a href="http://bokzuy.com" target="_blank">
-                    <img href="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/logo_bokzuy.png'; ?>" />
+                <span>Powered by</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" />
                 </a>
             </div>
             <?php
