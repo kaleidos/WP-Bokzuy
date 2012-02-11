@@ -37,14 +37,12 @@ Author URI: http://kaleidos.net/FFF8E7/
 
 define('BOKZUY_API_URL', 'http://api.bokzuy.com');
 
-
 // For i10n
 add_action('init', 'bokzuy_textdomain'); 
 function bokzuy_textdomain() {
     $dir = basename(dirname(__FILE__))."/languages";
     load_plugin_textdomain( 'bokzuy', 'wp-content/plugins/'.$dir, $dir);
 }
-
 
 /**********************************************************/
 /***************** Last badges widget *********************/
@@ -80,11 +78,11 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 		else{
 			echo $before_title. __('My last badges', 'bokzuy'). $after_title;
 		}
-
+        
         // Show the badges
         $bokzuy = new Bokzuy($instance['user'], $instance['password']);
-        if ($bokzuy.connect()){
-            $badgets = $bokzuy.get_last_badges($instance['number']);
+        if ($bokzuy->connect()){
+            $badgets = $bokzuy->get_last_badges($instance['number']);
             ?>
             <ul class="list-badges">
             <?php
@@ -107,7 +105,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 
         // Show the powered text
 		if($instance['show_powered']){ } 
-
+        
         echo $after_widget;
     }
         
@@ -179,7 +177,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
     }
 }
 
-class Bokzuy(){
+class Bokzuy{
     var $user_auth;
     var $user_id;
    
@@ -187,11 +185,6 @@ class Bokzuy(){
         $this->user_auth = $name.':'.$password;
     }
  
-    function Bokzuy($name, $password){
-        if (!empty($name) && !empty($password))  
-            $this->user_auth = $name.':'$password;
-    }
-
     function __GET_REQUEST($url, $options, $data){    
         $request = new HttpRequest($url, HttpRequest::METH_GET);
         $request->setOptions($options);
@@ -233,7 +226,7 @@ class Bokzuy(){
         return false;
     }
 
-    function get_last_badges($count = 6)
+    function get_last_badges($count = 6){
         $url = BOKZUY_API_URL.'/user/'.$this->user_id.'/bokie';
         $options = array('httpauth' => $this->user_auth);
         $data = array('max' => $count);
@@ -243,10 +236,7 @@ class Bokzuy(){
         if (!empty($content) && $content->success){
             return $content->result;
         }
+    }
 }
 
 ?>
-
-
-
-
