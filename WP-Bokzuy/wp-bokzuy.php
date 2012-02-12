@@ -57,23 +57,23 @@ function bokzuy_styles(){
 }
 
 /**********************************************************/
-/***************** Last badges widget *********************/
+/*************** Last user badges widget ******************/
 /**********************************************************/
 
-// A function to create the last badges widget
-add_action( 'widgets_init', 'last_badges_widget_init' );
-function last_badges_widget_init() {
-    register_widget('WP_Widget_Bokzuy_Last_Badges');
+// A function to create the last user badges widget
+add_action( 'widgets_init', 'last_user_badges_widget_init' );
+function last_user_badges_widget_init() {
+    register_widget('WP_Widget_Bokzuy_Last_User_Badges');
 }
 
-// WP_Widget_Bokzuy_Last_Badges class definition
-class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
+// WP_Widget_Bokzuy_Last_User_Badges class definition
+class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
 	
 	// Init
-    function WP_Widget_Bokzuy_Last_Badges() {
-        $widget_ops = array('classname' => 'widget_bokzuy_last_badges', 
-                            'description' => __('A list of the last Bokzuy badges', 'bokzuy'));
-        $this->WP_Widget('bokzuy_last_badges', __('WP-Bokzuy - Last badges', 'bokzuy'), $widget_ops);
+    function WP_Widget_Bokzuy_Last_User_Badges() {
+        $widget_ops = array('classname' => 'widget_bokzuy_last_user_badges', 
+                            'description' => __('A list of the last Bokzuy badges from an user', 'bokzuy'));
+        $this->WP_Widget('bokzuy_last_user_badges', __('WP-Bokzuy - Last user badges', 'bokzuy'), $widget_ops);
 	}
         
 	// Show widget 
@@ -146,7 +146,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
         global $wp_taxonomies;
                 
         $defaults = array( 
-            'title' => __('My last badges', 'bokzuy'),
+            'title' => '',
             'user' => '',
             'password' => '',
             'number' => 6,
