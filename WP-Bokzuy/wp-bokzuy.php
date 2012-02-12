@@ -103,7 +103,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
                 <li class="badge">
                     <a href="<?php echo $badge->bokyUrl; ?>" target="_blank">
 		                <?php if($instance['show_photos']){ ?>
-                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>" />
+                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>" class="badge-image"/>
                         <?php } ?>
                         <p><?php echo $badge->name; ?></p>
                     </a>
@@ -115,12 +115,12 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
             <?php
         }
 
-        // Show the powered text
-		if($instance['show_powered']){ 
+        // Show bokzuy info
+		if($instance['show_bokzuy_info']){ 
             ?>
             <div class="bokzuy-info">
                 <a href="http://bokzuy.com" target="_blank">
-                <span>Powered by</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page'); ?>"/>
+                <span>Powered by</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page'); ?>" class="bokzuy-logo" />
                 </a>
             </div>
             <?php
@@ -132,7 +132,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
 	// Save admin panel options
     function update($new_instance, $old_instance){
         $instance = $old_instance;
-		$values = array('title', 'user', 'password', 'number', 'lang', 'show_photos', 'show_powered');   
+		$values = array('title', 'user', 'password', 'number', 'lang', 'show_photos', 'show_bokzuy_info');   
         
         foreach($values as $val){
             $instance[$val] = strip_tags($new_instance[$val]);
@@ -152,7 +152,7 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
             'number' => 6,
             'lang' => 'en',
             'show_photos' => True, 
-            'show_powered' => True, 
+            'show_bokzuy_info' => True, 
         );
         $instance = wp_parse_args((array)$instance, $defaults); 
 
@@ -211,10 +211,10 @@ class WP_Widget_Bokzuy_Last_Badges extends WP_Widget {
                 <?php _e("Show the budges images", 'bokzuy'); ?></label>
         </p>
         <p>
-            <input type="checkbox" id="<?php echo $this->get_field_id('show_powered'); ?>" 
-                name="<?php echo $this->get_field_name('show_powered'); ?>" 
-                <?php if($instance['show_powered']){ echo 'checked="checked"'; } ?> class="checkbox"/>
-            <label for="<?php echo $this->get_field_id('show_powered'); ?>">
+            <input type="checkbox" id="<?php echo $this->get_field_id('show_bokzuy_info'); ?>" 
+                name="<?php echo $this->get_field_name('show_bokzuy_info'); ?>" 
+                <?php if($instance['show_bokzuy_info']){ echo 'checked="checked"'; } ?> class="checkbox"/>
+            <label for="<?php echo $this->get_field_id('show_bokzuy_info'); ?>">
                 <?php _e("Show Bokzuy info", 'bokzuy'); ?></label>
         </p>
         <?php
