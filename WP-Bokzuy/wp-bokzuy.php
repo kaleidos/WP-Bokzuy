@@ -120,7 +120,7 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
             ?>
             <div class="bokzuy-info">
                 <a href="http://bokzuy.com" target="_blank">
-                <span>Powered by</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page'); ?>" class="bokzuy-logo" />
+                <span>Enjoy</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page'); ?>" class="bokzuy-logo" />
                 </a>
             </div>
             <?php
