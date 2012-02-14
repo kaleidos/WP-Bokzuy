@@ -1,0 +1,31 @@
+/*
+ * WP-BOKZUY style.css
+ * -------------------
+ *
+ *   This is my poor css style for WP-Bokzuy. I'll try to improve it, I swear
+ */
+
+.widget_bokzuy_last_user_badges ul {
+    list-style-type: none;
+}
+    .widget_bokzuy_last_user_badges li {
+        display: block;
+    }
+
+        .widget_bokzuy_last_user_badges .badge-image {
+            height: 60px;
+            vertical-align: middle;
+        }
+        .widget_bokzuy_last_user_badges p {
+            display: inline;
+        }
+
+
+.widget_bokzuy_last_user_badges .bokzuy-info {
+    margin-top: 25px;
+    float: right;
+}
+    .widget_bokzuy_last_user_badges .bokzuy-info .bokzuy-logo{
+        height: 12px;
+        vertical-align: middle;
+    }
