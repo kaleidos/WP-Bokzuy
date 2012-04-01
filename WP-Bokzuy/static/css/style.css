@@ -5,24 +5,37 @@
  *   This is my poor css style for WP-Bokzuy. I'll try to improve it, I swear
  */
 
-.widget_bokzuy_last_user_badges ul {
-    list-style-type: none;
-}
-    .widget_bokzuy_last_user_badges li {
+.widget_bokzuy_last_user_badges .list-badges { }
+    .widget_bokzuy_last_user_badges .badge {
         display: block;
+        margin-bottom: 15px;
     }
-
         .widget_bokzuy_last_user_badges .badge-image {
-            height: 60px;
-            vertical-align: middle;
+            float:left;
+            width: 60px;
         }
-        .widget_bokzuy_last_user_badges p {
-            display: inline;
+            .widget_bokzuy_last_user_badges .badge-image  img{
+                width: 60px;
+            }
+        .widget_bokzuy_last_user_badges .badge-info {
+            float: right;
+            width: 75%;
         }
+            .widget_bokzuy_last_user_badges .badge-info p.badge-title{ }
+            .widget_bokzuy_last_user_badges .badge-info p.badge-description{ 
+                font-style: italic;
+            }
+            .widget_bokzuy_last_user_badges .badge-info p.badge-sender{
+                font-size: 11px;
+                text-align: right;
+                margin-top: 3px;
+            }
 
+        .widget_bokzuy_last_user_badges .clear {
+            clear:both;
+        }
 
 .widget_bokzuy_last_user_badges .bokzuy-info {
-    margin-top: 25px;
     float: right;
 }
     .widget_bokzuy_last_user_badges .bokzuy-info .bokzuy-logo{

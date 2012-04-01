@@ -35,7 +35,10 @@ Author URI: http://kaleidos.net/FFF8E7/
  * Online: http://www.gnu.org/licenses/gpl.txt
  */
 
-define('BOKZUY_API_URL', 'http://api.bokzuy.com');
+
+// Load Bokzuy lib
+include_once(dirname(__FILE__).'/lib/libbokzuy/libbokzuy.php');
+
 
 // For i10n
 add_action('init', 'bokzuy_textdomain'); 
@@ -44,7 +47,6 @@ function bokzuy_textdomain() {
         $dir = basename(dirname(__FILE__)).'/languages';
         load_plugin_textdomain( 'bokzuy', 'wp-content/plugins/'.$dir, $dir);
     }
-    // Todo: Show alert
 }
 
 // Adding style.css
@@ -53,7 +55,6 @@ function bokzuy_styles(){
     if (function_exists('wp_enqueue_script')) {
        wp_enqueue_style('bokzuy', get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/css/style.css');
     }
-    // Todo: Show alert
 }
 
 /**********************************************************/
@@ -87,40 +88,43 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
         if($title){
             echo $before_title . $title . $after_title;
         }
-		else{
-			echo $before_title. __('My last badges', 'bokzuy'). $after_title;
-		}
+        else{
+            echo $before_title. __('My last badges', 'bokzuy'). $after_title;
+        }
         
         // Show the badges
-        $bokzuy = new Bokzuy($instance['user'], $instance['password'], $instance['lang']);
-        if ($bokzuy->connect()){
-            $badges = $bokzuy->get_last_badges($instance['number']);
+        $bokzuy = new Bokzuy($instance['user'], $instance['password']);
+        if ($bokzuy->authenticate()){
+            $bokies = $bokzuy->get_last_received_badges_from_me($instance['lang'], $instance['number']);
             ?>
-            <ul class="list-badges">
-            <?php
-            foreach ($badges as $badge){ 
-                ?>
-                <li class="badge">
-                    <a href="<?php echo $badge->bokyUrl; ?>" target="_blank">
-		                <?php if($instance['show_photos']){ ?>
-                            <img src="<?php echo $badge->badgeImage; ?>" alt="<?php echo $badge->name; ?>" class="badge-image"/>
-                        <?php } ?>
-                        <p><?php echo $badge->name; ?></p>
-                    </a>
-                </li>
-                <?php
-            }
-            ?>
-            </ul>
+            <div class="list-badges">
+                <?php foreach ($bokies as $bokie){ ?>
+                <div class="badge">
+	    	        <?php if($instance['show_photos']){ ?>
+                    <div class="badge-image">
+                        <a href="<?php echo $bokie->bokyUrl; ?>" target="_blank">
+                            <img src="<?php echo $bokie->badge->image; ?>" alt="<?php echo $bokie->badge->name; ?>"/>
+                        </a>
+                    </div>
+                    <?php } ?>
+                    <div class="badge-info">
+                        <p class="badge-title"><a href="<?php echo $bokie->bokyUrl; ?>" target="_blank"><?php echo $bokie->badge->name; ?></a></p>
+                        <p class="badge-description"><?php echo $bokie->badge->description; ?></p>
+                        <p class="badge-sender"><?php printf(_x('from <a href="%1$s" target="_blank">%2$s</a> %3$s', '1 is sender prodile url, 2 is sender name and 3 is the date', 'bokzuy'), $bokie->sender->profile, $bokie->sender->name, since($bokie->date)); ?></p>
+                    </div>
+                    <div class="clear"></div>
+                </div> 
+                <?php } ?>
+            </div>
             <?php
         }
 
         // Show bokzuy info
-		if($instance['show_bokzuy_info']){ 
+        if($instance['show_bokzuy_info']){ 
             ?>
             <div class="bokzuy-info">
                 <a href="http://bokzuy.com" target="_blank">
-                <span>Enjoy</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page'); ?>" class="bokzuy-logo" />
+                <span>Enjoy</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page', 'bokzuy'); ?>" class="bokzuy-logo" />
                 </a>
             </div>
             <?php
@@ -128,8 +132,8 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
         
         echo $after_widget;
     }
-        
-	// Save admin panel options
+
+    // Save admin panel options
     function update($new_instance, $old_instance){
         $instance = $old_instance;
 		$values = array('title', 'user', 'password', 'number', 'lang', 'show_photos', 'show_bokzuy_info');   
@@ -141,7 +145,7 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
         return $instance;
     }
 
-	// Show admin panel widget
+    // Show admin panel widget
     function form($instance){
         global $wp_taxonomies;
                 
@@ -156,8 +160,7 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
         );
         $instance = wp_parse_args((array)$instance, $defaults); 
 
-	    ?>
-       
+	?>
         <p>
             <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e("Title", 'bokzuy'); ?>:</label>
             <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" 
@@ -170,7 +173,7 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
         </p>
         <p>
             <label for="<?php echo $this->get_field_id('password'); ?>"><?php _e("Bokzuy password", 'bokzuy'); ?>:</label>
-            <input id="<?php echo $this->get_field_id('password'); ?>" name="<?php echo $this->get_field_name('password'); ?>" 
+            <input type="password" id="<?php echo $this->get_field_id('password'); ?>" name="<?php echo $this->get_field_name('password'); ?>" 
 	            value="<?php echo $instance['password']; ?>" class="widefat" />
         </p>
         <p>
@@ -221,72 +224,47 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
     }
 }
 
-class Bokzuy{
-    var $user_auth;
-    var $user_id;
-    var $lang;
-   
-    function Bokzuy($name, $password, $lang){
-        $this->user_auth = $name.':'.$password;
-        $this->lang = $lang;
-    }
- 
-    function __GET_REQUEST($url, $options, $data){    
-        $request = new HttpRequest($url, HttpRequest::METH_GET);
-        $request->setOptions($options);
-        $request->addQueryData($data);
-
-        try {
-            $request->send();
-            //echo $request->getResponseCode();
-            if ($request->getResponseCode() == 200) {
-                //echo $request->getResponseBody();
-                return $request->getResponseBody();
-            }
-        } catch (HttpException $ex) {
-            return null;
-        }
-    }
-
-    function __POST_REQUEST($url, $options, $fields){
-        $request = new HttpRequest($url, HttpRequest::METH_POST);
-        $request->setOptions($options);
-        $request->addPostFields($fields);
-
-        try {
-            return  $request->send()->getBody();
-        } catch (HttpException $ex) {
-            return null;
-        }
-    }
-
-    function connect(){  
-        $url = BOKZUY_API_URL.'/user/id';
-        $options = array('httpauth' => $this->user_auth);
-        $data = array('lang' => $this->lang);
+/*
+ * This function return the formatted date
+ */
+function since($date){
+    $timestamp = strtotime($date);
+    $diff = current_time('timestamp') - $timestamp;
     
-        $content = json_decode($this->__GET_REQUEST($url, $options, $data));
-
-        if ($content && $content->success){
-            $this->user_id = $content->userId;
-            return $this->user_id;
-        }
-        return null;
+    $month = array("",
+        _x('Jan', 'First three letters of January', 'bokzuy'),
+        _x('Feb', 'First three letters of February', 'bokzuy'),
+        _x('Mar', 'First three letters of March', 'bokzuy'),
+        _x('Apr', 'First three letters of April', 'bokzuy'),
+        _x('May', 'First three letters of May', 'bokzuy'),
+        _x('Jun', 'First three letters of June', 'bokzuy'),
+        _x('Jul', 'First three letters of July', 'bokzuy'),
+        _x('Aug', 'First three letters of August', 'bokzuy'),
+        _x('Sep', 'First three letters of September', 'bokzuy'),
+        _x('Oct', 'First three letters of October', 'bokzuy'),
+        _x('Nov', 'First three letters of November', 'bokzuy'),
+        _x('Dec', 'First three letters of December', 'bokzuy'));
+    
+    switch ($diff) {
+        case $diff < 1:
+            return __("now", 'bokzuy');
+        case $diff < 60:
+            return sprintf(_n("about a second ago", "about %d seconds ago", $diff, 'bokzuy'), $diff);
+        case $diff < 3600:
+            $rem = (int)($diff/60);
+            return sprintf(_n("about a minute ago", "about %d minutes ago", $rem, 'bokzuy'), $rem);
+        case $diff < 86400:
+            $rem = (int)($diff/3600);
+            return sprintf(_n("about an hour ago", "about %d hours ago", $rem, 'bokzuy'), $rem);
+        case $diff < 2419200:
+            $rem = (int)($diff/86400);
+            return sprintf(_n("about a day ago", "about %d days ago", $rem, 'bokzuy'), $rem);
+        case $diff < 29030400:
+            return sprintf(_x('the %1$s %2$s', 'The day(1) and month(2)', 'bokzuy'), date(_x('jS', 'Day format', 'bokzuy'), $timestamp), $month[date('n', $timestamp)]); // 4 Apr
+        default:
+            return sprintf(_x('the %1$s %2$s %3$s', 'The day(1), month(2) and year(3)', 'bokzuy'), date(_x('jS', 'Day format', 'bokzuy'), $timestamp), $month[date('n', $timestamp)], date('y', $timestamp)); // 10 jun 09
     }
-
-    function get_last_badges($count = 6){
-        $url = BOKZUY_API_URL.'/user/'.$this->user_id.'/bokies';
-        $options = array('httpauth' => $this->user_auth);
-        $data = array('lang' => $this->lang, 
-                      'max' => $count);
-
-        $content = json_decode($this->__GET_REQUEST($url, $options, $data));
-
-        if ($content && $content->success){
-            return $content->result;
-        }
-        return null;
-    }
+    return $timeago;
 }
 
 ?>

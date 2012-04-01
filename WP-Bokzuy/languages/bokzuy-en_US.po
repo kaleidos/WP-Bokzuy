@@ -19,54 +19,195 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: wp-bokzuy.php:75
-#@ bokzuy
-msgid "A list of the last Bokzuy badges"
-msgstr "A list of the last Bokzuy badges"
-
-#: wp-bokzuy.php:76
-#@ bokzuy
-msgid "WP-Bokzuy - Last badges"
-msgstr "WP-Bokzuy - Last badges"
-
-#: wp-bokzuy.php:91
-#: wp-bokzuy.php:141
+#: wp-bokzuy.php:92
 #@ bokzuy
 msgid "My last badges"
 msgstr "My last badges"
 
-#: wp-bokzuy.php:154
+#: wp-bokzuy.php:165
 #@ bokzuy
 msgid "Title"
 msgstr "Title"
 
-#: wp-bokzuy.php:159
+#: wp-bokzuy.php:170
 #@ bokzuy
 msgid "Bokzuy user"
 msgstr "Bokzuy user"
 
-#: wp-bokzuy.php:164
+#: wp-bokzuy.php:175
 #@ bokzuy
 msgid "Bokzuy password"
 msgstr "Bokzuy password"
 
-#: wp-bokzuy.php:170
+#: wp-bokzuy.php:181
 #@ bokzuy
 msgid "Number of badges to show"
 msgstr "Number of badges to show"
 
-#: wp-bokzuy.php:185
+#: wp-bokzuy.php:196
 #@ bokzuy
 msgid "Language"
 msgstr "Language"
 
-#: wp-bokzuy.php:203
+#: wp-bokzuy.php:214
 #@ bokzuy
 msgid "Show the budges images"
 msgstr "Show the budges images"
 
-#: wp-bokzuy.php:210
+#: wp-bokzuy.php:221
 #@ bokzuy
 msgid "Show Bokzuy info"
 msgstr "Show Bokzuy info"
+
+#: wp-bokzuy.php:76
+#@ bokzuy
+msgid "A list of the last Bokzuy badges from an user"
+msgstr ""
+
+#: wp-bokzuy.php:77
+#@ bokzuy
+msgid "WP-Bokzuy - Last user badges"
+msgstr ""
+
+#: wp-bokzuy.php:113
+#, php-format
+#@ bokzuy
+msgctxt "1 is sender prodile url, 2 is sender name and 3 is the date"
+msgid "from <a href=\"%1$s\" target=\"_blank\">%2$s</a> %3$s"
+msgstr ""
+
+#: wp-bokzuy.php:127
+#@ bokzuy
+msgid "Bokzuy web page"
+msgstr ""
+
+#: wp-bokzuy.php:235
+#@ bokzuy
+msgctxt "First three letters of January"
+msgid "Jan"
+msgstr ""
+
+#: wp-bokzuy.php:236
+#@ bokzuy
+msgctxt "First three letters of February"
+msgid "Feb"
+msgstr ""
+
+#: wp-bokzuy.php:237
+#@ bokzuy
+msgctxt "First three letters of March"
+msgid "Mar"
+msgstr ""
+
+#: wp-bokzuy.php:238
+#@ bokzuy
+msgctxt "First three letters of April"
+msgid "Apr"
+msgstr ""
+
+#: wp-bokzuy.php:239
+#@ bokzuy
+msgctxt "First three letters of May"
+msgid "May"
+msgstr ""
+
+#: wp-bokzuy.php:240
+#@ bokzuy
+msgctxt "First three letters of June"
+msgid "Jun"
+msgstr ""
+
+#: wp-bokzuy.php:241
+#@ bokzuy
+msgctxt "First three letters of July"
+msgid "Jul"
+msgstr ""
+
+#: wp-bokzuy.php:242
+#@ bokzuy
+msgctxt "First three letters of August"
+msgid "Aug"
+msgstr ""
+
+#: wp-bokzuy.php:243
+#@ bokzuy
+msgctxt "First three letters of September"
+msgid "Sep"
+msgstr ""
+
+#: wp-bokzuy.php:244
+#@ bokzuy
+msgctxt "First three letters of October"
+msgid "Oct"
+msgstr ""
+
+#: wp-bokzuy.php:245
+#@ bokzuy
+msgctxt "First three letters of November"
+msgid "Nov"
+msgstr ""
+
+#: wp-bokzuy.php:246
+#@ bokzuy
+msgctxt "First three letters of December"
+msgid "Dec"
+msgstr ""
+
+#: wp-bokzuy.php:250
+#@ bokzuy
+msgid "now"
+msgstr ""
+
+#: wp-bokzuy.php:252
+#, php-format
+#@ bokzuy
+msgid "about a second ago"
+msgid_plural "about %d seconds ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: wp-bokzuy.php:255
+#, php-format
+#@ bokzuy
+msgid "about a minute ago"
+msgid_plural "about %d minutes ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: wp-bokzuy.php:258
+#, php-format
+#@ bokzuy
+msgid "about an hour ago"
+msgid_plural "about %d hours ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: wp-bokzuy.php:261
+#, php-format
+#@ bokzuy
+msgid "about a day ago"
+msgid_plural "about %d days ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: wp-bokzuy.php:263
+#, php-format
+#@ bokzuy
+msgctxt "The day(1) and month(2)"
+msgid "the %1$s %2$s"
+msgstr ""
+
+#: wp-bokzuy.php:263
+#: wp-bokzuy.php:265
+#@ bokzuy
+msgctxt "Day format"
+msgid "jS"
+msgstr ""
+
+#: wp-bokzuy.php:265
+#, php-format
+#@ bokzuy
+msgctxt "The day(1), month(2) and year(3)"
+msgid "the %1$s %2$s %3$s"
+msgstr ""
 
