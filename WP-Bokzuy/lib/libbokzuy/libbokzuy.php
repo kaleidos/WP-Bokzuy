@@ -98,6 +98,23 @@ class Bokzuy{
         return null;
     }
 
+    function get_timeline_from_me($group_slug=null, $lang = 'en', $count = 6, $ignoreComments=false, $ignoreDeserves= false){
+        $url = BOKZUY_API_URL.'/me/timeline';
+        $options = array('httpauth' => $this->user_auth);
+        $data = array('lang' => $lang, 
+                      'max' => $count,
+                      'ignoreComments' => $ignoreComments, 
+                      'ignoreDeserves' => $ignoreDeserves);
+        if(!empty($group_slug)) $data['group'] = $group_slug;
+
+        $content = json_decode($this->__GET_REQUEST($url, $options, $data));
+
+        if ($content && $content->success){
+            return $content->bokies;
+        }
+        return null;
+    }
+    
 }
 
 ?>
