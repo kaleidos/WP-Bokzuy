@@ -110,7 +110,7 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
                     <div class="badge-info">
                         <p class="badge-title"><a href="<?php echo $bokie->bokyUrl; ?>" target="_blank"><?php echo $bokie->badge->name; ?></a></p>
                         <p class="badge-description"><?php echo $bokie->badge->description; ?></p>
-                        <p class="badge-sender"><?php printf(_x('from <a href="%1$s" target="_blank">%2$s</a> %3$s', '1 is sender prodile url, 2 is sender name and 3 is the date', 'bokzuy'), $bokie->sender->profile, $bokie->sender->name, since($bokie->date)); ?></p>
+                        <p class="badge-sender"><?php printf(_x('from <a href="%1$s" target="_blank">%2$s</a> %3$s', '1 is sender proifile url, 2 is sender name and 3 is the date', 'bokzuy'), $bokie->sender->profile, $bokie->sender->name, since($bokie->date)); ?></p>
                     </div>
                     <div class="clear"></div>
                 </div> 
@@ -224,6 +224,190 @@ class WP_Widget_Bokzuy_Last_User_Badges extends WP_Widget {
     }
 }
 
+/**********************************************************/
+/***************** User timeline widget *******************/
+/**********************************************************/
+
+// A function to create the user timeline widget
+add_action( 'widgets_init', 'user_timeline_widget_init' );
+function user_timeline_widget_init() {
+    register_widget('WP_Widget_Bokzuy_User_Timeline');
+}
+
+// WP_Widget_Bokzuy_User_Timeline class definition
+class WP_Widget_Bokzuy_User_Timeline extends WP_Widget {
+	
+	// Init
+    function WP_Widget_Bokzuy_User_Timeline() {
+        $widget_ops = array('classname' => 'widget_bokzuy_user_timeline', 
+                            'description' => __('The timeline with the last Bokzuy badges from an user or his group', 'bokzuy'));
+        $this->WP_Widget('bokzuy_user_timeline', __('WP-Bokzuy - User timeline', 'bokzuy'), $widget_ops);
+	}
+        
+	// Show widget 
+    function widget($args, $instance){
+        extract($args);
+		
+        echo $before_widget;
+		
+		// Show the widget title
+        if($instance['title']){
+            $title = apply_filters('widget_title', $instance['title']);
+        }
+        else if ($instance['group_slug']){
+            $title = sprintf(_x('%s timeline at Bokzuy', 'Set the group name', 'bokzuy'), $instance['group_name']? $instance['group_name']: $instance['group_slug']); 
+        }
+
+        if($title = apply_filters('widget_title', $title)){
+            echo $before_title . $title . $after_title;
+        }
+        else {
+                echo $before_title. __('My timeline at Bokzuy', 'bokzuy') . $after_title;
+        }
+        
+        // Show the badges
+        $bokzuy = new Bokzuy($instance['user'], $instance['password']);
+        if ($bokzuy->authenticate()){
+            $bokies = $bokzuy->get_timeline_from_me($instance['group_slug'], $instance['lang'], $instance['number']);
+            ?>
+            <div class="list-badges">
+                <?php foreach ($bokies as $bokie){ ?>
+                <div class="badge">
+	    	        <?php if($instance['show_photos']){ ?>
+                    <div class="badge-image">
+                        <a href="<?php echo $bokie->bokyUrl; ?>" target="_blank">
+                            <img src="<?php echo $bokie->badge->image; ?>" alt="<?php echo $bokie->badge->name; ?>"/>
+                        </a>
+                    </div>
+                    <?php } ?>
+                    <div class="badge-info">
+                        <p class="badge-title"><a href="<?php echo $bokie->bokyUrl; ?>" target="_blank"><?php echo $bokie->badge->name; ?></a></p>
+                        <p class="badge-description"><?php echo $bokie->badge->description; ?></p>
+                        <p class="badge-sender"><?php printf(_x('from <a href="%1$s" target="_blank">%2$s</a> to <a href="%3$s" target="_blank">%4$s</a> %5$s', '1 is sender profile url, 2 is sender name, 3 is receiver profile url, 4 is receiver name and 5 is the date', 'bokzuy'), $bokie->sender->profile, $bokie->sender->name, $bokie->receiver->profile, $bokie->receiver->name, since($bokie->date)); ?></p>
+                    </div>
+                    <div class="clear"></div>
+                </div> 
+                <?php } ?>
+            </div>
+            <?php
+        }
+
+        // Show bokzuy info
+        if($instance['show_bokzuy_info']){ 
+            ?>
+            <div class="bokzuy-info">
+                <a href="http://bokzuy.com" target="_blank">
+                <span>Enjoy</span> <img src="<?php echo get_bloginfo('wpurl').'/wp-content/plugins/WP-Bokzuy/static/img/logo_bokzuy.png'; ?>" alt="<?php _e('Bokzuy web page', 'bokzuy'); ?>" class="bokzuy-logo" />
+                </a>
+            </div>
+            <?php
+        } 
+        
+        echo $after_widget;
+    }
+
+    // Save admin panel options
+    function update($new_instance, $old_instance){
+        $instance = $old_instance;
+		$values = array('title', 'user', 'password', 'group_name', 'group_slug', 'number', 'lang', 'show_photos', 'show_bokzuy_info');   
+        
+        foreach($values as $val){
+            $instance[$val] = strip_tags($new_instance[$val]);
+        }
+        
+        return $instance;
+    }
+
+    // Show admin panel widget
+    function form($instance){
+        global $wp_taxonomies;
+                
+        $defaults = array( 
+            'title' => '',
+            'user' => '',
+            'password' => '',
+            'group_name' => '',
+            'group_slug' => '',
+            'number' => 6,
+            'lang' => 'en',
+            'show_photos' => True, 
+            'show_bokzuy_info' => True, 
+        );
+        $instance = wp_parse_args((array)$instance, $defaults); 
+
+	?>
+        <p>
+            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e("Title", 'bokzuy'); ?>:</label>
+            <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" 
+	            value="<?php echo $instance['title']; ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo $this->get_field_id('user'); ?>"><?php _e("Bokzuy user", 'bokzuy'); ?>:</label>
+            <input id="<?php echo $this->get_field_id('user'); ?>" name="<?php echo $this->get_field_name('user'); ?>" 
+	            value="<?php echo $instance['user']; ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo $this->get_field_id('password'); ?>"><?php _e("Bokzuy password", 'bokzuy'); ?>:</label>
+            <input type="password" id="<?php echo $this->get_field_id('password'); ?>" name="<?php echo $this->get_field_name('password'); ?>" 
+	            value="<?php echo $instance['password']; ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo $this->get_field_id('group_name'); ?>"><?php _e("Bokzuy group name", 'bokzuy'); ?>:</label>
+            <input id="<?php echo $this->get_field_id('group_name'); ?>" name="<?php echo $this->get_field_name('group_name'); ?>" 
+	            value="<?php echo $instance['group_name']; ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo $this->get_field_id('group_slug'); ?>"><?php _e("Bokzuy group slug", 'bokzuy'); ?>:</label>
+            <input id="<?php echo $this->get_field_id('group_slug'); ?>" name="<?php echo $this->get_field_name('group_slug'); ?>" 
+	            value="<?php echo $instance['group_slug']; ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo $this->get_field_id('number'); ?>">
+                <?php _e("Number of badges to show", 'bokzuy'); ?>:</label>
+            <select id="<?php echo $this->get_field_id('number'); ?>" 
+                name="<?php echo $this->get_field_name('number'); ?>" class="widefat">
+                <?php 
+                foreach( range(1, 20) as $option){
+                    $sel = '';
+                    if($instance['number'] == $option)
+                        $sel = 'selected="selected"';
+                    echo '<option '.$sel.' value="'.$option.'">'.$option.'</option>';
+                }
+                ?>
+            </select>
+        </p> 
+        <p>
+            <label for="<?php echo $this->get_field_id('lang'); ?>">
+                <?php _e("Language", 'bokzuy'); ?>:</label>
+            <select id="<?php echo $this->get_field_id('lang'); ?>" 
+                name="<?php echo $this->get_field_name('lang'); ?>" class="widefat">
+                <?php 
+                foreach( array('es', 'en') as $option){
+                    $sel = '';
+                    if($instance['lang'] == $option)
+                        $sel = 'selected="selected"';
+                    echo '<option '.$sel.' value="'.$option.'">'.$option.'</option>';
+                }
+                ?>
+            </select>
+        </p> 
+        <p>
+            <input type="checkbox" id="<?php echo $this->get_field_id('show_photos'); ?>" 
+                name="<?php echo $this->get_field_name('show_photos'); ?>" 
+                <?php if($instance['show_photos']){ echo 'checked="checked"'; } ?> class="checkbox"/>
+            <label for="<?php echo $this->get_field_id('show_photos'); ?>">
+                <?php _e("Show the budges images", 'bokzuy'); ?></label>
+        </p>
+        <p>
+            <input type="checkbox" id="<?php echo $this->get_field_id('show_bokzuy_info'); ?>" 
+                name="<?php echo $this->get_field_name('show_bokzuy_info'); ?>" 
+                <?php if($instance['show_bokzuy_info']){ echo 'checked="checked"'; } ?> class="checkbox"/>
+            <label for="<?php echo $this->get_field_id('show_bokzuy_info'); ?>">
+                <?php _e("Show Bokzuy info", 'bokzuy'); ?></label>
+        </p>
+        <?php
+    }
+}
 /*
  * This function return the formatted date
  */
