@@ -25,36 +25,43 @@ msgid "My last badges"
 msgstr "My last badges"
 
 #: wp-bokzuy.php:165
+#: wp-bokzuy.php:337
 #@ bokzuy
 msgid "Title"
 msgstr "Title"
 
 #: wp-bokzuy.php:170
+#: wp-bokzuy.php:342
 #@ bokzuy
 msgid "Bokzuy user"
 msgstr "Bokzuy user"
 
 #: wp-bokzuy.php:175
+#: wp-bokzuy.php:347
 #@ bokzuy
 msgid "Bokzuy password"
 msgstr "Bokzuy password"
 
 #: wp-bokzuy.php:181
+#: wp-bokzuy.php:363
 #@ bokzuy
 msgid "Number of badges to show"
 msgstr "Number of badges to show"
 
 #: wp-bokzuy.php:196
+#: wp-bokzuy.php:378
 #@ bokzuy
 msgid "Language"
 msgstr "Language"
 
 #: wp-bokzuy.php:214
+#: wp-bokzuy.php:396
 #@ bokzuy
 msgid "Show the budges images"
 msgstr "Show the budges images"
 
 #: wp-bokzuy.php:221
+#: wp-bokzuy.php:403
 #@ bokzuy
 msgid "Show Bokzuy info"
 msgstr "Show Bokzuy info"
@@ -69,96 +76,90 @@ msgstr ""
 msgid "WP-Bokzuy - Last user badges"
 msgstr ""
 
-#: wp-bokzuy.php:113
-#, php-format
-#@ bokzuy
-msgctxt "1 is sender prodile url, 2 is sender name and 3 is the date"
-msgid "from <a href=\"%1$s\" target=\"_blank\">%2$s</a> %3$s"
-msgstr ""
-
 #: wp-bokzuy.php:127
+#: wp-bokzuy.php:297
 #@ bokzuy
 msgid "Bokzuy web page"
 msgstr ""
 
-#: wp-bokzuy.php:235
+#: wp-bokzuy.php:416
 #@ bokzuy
 msgctxt "First three letters of January"
 msgid "Jan"
 msgstr ""
 
-#: wp-bokzuy.php:236
+#: wp-bokzuy.php:417
 #@ bokzuy
 msgctxt "First three letters of February"
 msgid "Feb"
 msgstr ""
 
-#: wp-bokzuy.php:237
+#: wp-bokzuy.php:418
 #@ bokzuy
 msgctxt "First three letters of March"
 msgid "Mar"
 msgstr ""
 
-#: wp-bokzuy.php:238
+#: wp-bokzuy.php:419
 #@ bokzuy
 msgctxt "First three letters of April"
 msgid "Apr"
 msgstr ""
 
-#: wp-bokzuy.php:239
+#: wp-bokzuy.php:420
 #@ bokzuy
 msgctxt "First three letters of May"
 msgid "May"
 msgstr ""
 
-#: wp-bokzuy.php:240
+#: wp-bokzuy.php:421
 #@ bokzuy
 msgctxt "First three letters of June"
 msgid "Jun"
 msgstr ""
 
-#: wp-bokzuy.php:241
+#: wp-bokzuy.php:422
 #@ bokzuy
 msgctxt "First three letters of July"
 msgid "Jul"
 msgstr ""
 
-#: wp-bokzuy.php:242
+#: wp-bokzuy.php:423
 #@ bokzuy
 msgctxt "First three letters of August"
 msgid "Aug"
 msgstr ""
 
-#: wp-bokzuy.php:243
+#: wp-bokzuy.php:424
 #@ bokzuy
 msgctxt "First three letters of September"
 msgid "Sep"
 msgstr ""
 
-#: wp-bokzuy.php:244
+#: wp-bokzuy.php:425
 #@ bokzuy
 msgctxt "First three letters of October"
 msgid "Oct"
 msgstr ""
 
-#: wp-bokzuy.php:245
+#: wp-bokzuy.php:426
 #@ bokzuy
 msgctxt "First three letters of November"
 msgid "Nov"
 msgstr ""
 
-#: wp-bokzuy.php:246
+#: wp-bokzuy.php:427
 #@ bokzuy
 msgctxt "First three letters of December"
 msgid "Dec"
 msgstr ""
 
-#: wp-bokzuy.php:250
+#: wp-bokzuy.php:431
 #@ bokzuy
 msgid "now"
 msgstr ""
 
-#: wp-bokzuy.php:252
+#: wp-bokzuy.php:433
 #, php-format
 #@ bokzuy
 msgid "about a second ago"
@@ -166,7 +167,7 @@ msgid_plural "about %d seconds ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: wp-bokzuy.php:255
+#: wp-bokzuy.php:436
 #, php-format
 #@ bokzuy
 msgid "about a minute ago"
@@ -174,7 +175,7 @@ msgid_plural "about %d minutes ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: wp-bokzuy.php:258
+#: wp-bokzuy.php:439
 #, php-format
 #@ bokzuy
 msgid "about an hour ago"
@@ -182,7 +183,7 @@ msgid_plural "about %d hours ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: wp-bokzuy.php:261
+#: wp-bokzuy.php:442
 #, php-format
 #@ bokzuy
 msgid "about a day ago"
@@ -190,24 +191,70 @@ msgid_plural "about %d days ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: wp-bokzuy.php:263
+#: wp-bokzuy.php:444
 #, php-format
 #@ bokzuy
 msgctxt "The day(1) and month(2)"
 msgid "the %1$s %2$s"
 msgstr ""
 
-#: wp-bokzuy.php:263
-#: wp-bokzuy.php:265
+#: wp-bokzuy.php:444
+#: wp-bokzuy.php:446
 #@ bokzuy
 msgctxt "Day format"
 msgid "jS"
 msgstr ""
 
-#: wp-bokzuy.php:265
+#: wp-bokzuy.php:446
 #, php-format
 #@ bokzuy
 msgctxt "The day(1), month(2) and year(3)"
 msgid "the %1$s %2$s %3$s"
+msgstr ""
+
+#: wp-bokzuy.php:113
+#, php-format
+#@ bokzuy
+msgctxt "1 is sender proifile url, 2 is sender name and 3 is the date"
+msgid "from <a href=\"%1$s\" target=\"_blank\">%2$s</a> %3$s"
+msgstr ""
+
+#: wp-bokzuy.php:243
+#@ bokzuy
+msgid "The timeline with the last Bokzuy badges from an user or his group"
+msgstr ""
+
+#: wp-bokzuy.php:244
+#@ bokzuy
+msgid "WP-Bokzuy - User timeline"
+msgstr ""
+
+#: wp-bokzuy.php:260
+#@ bokzuy
+msgid "My timeline at Bokzuy"
+msgstr ""
+
+#: wp-bokzuy.php:262
+#, php-format
+#@ bokzuy
+msgctxt "Set the group name"
+msgid "%s timeline at Bokzuy"
+msgstr ""
+
+#: wp-bokzuy.php:283
+#, php-format
+#@ bokzuy
+msgctxt "1 is sender profile url, 2 is sender name, 3 is receiver profile url, 4 is receiver name and 5 is the date"
+msgid "from <a href=\"%1$s\" target=\"_blank\">%2$s</a> to <a href=\"%3$s\" target=\"_blank\">%4$s</a> %5$s"
+msgstr ""
+
+#: wp-bokzuy.php:352
+#@ bokzuy
+msgid "Bokzuy group name"
+msgstr ""
+
+#: wp-bokzuy.php:357
+#@ bokzuy
+msgid "Bokzuy group slug"
 msgstr ""
 
